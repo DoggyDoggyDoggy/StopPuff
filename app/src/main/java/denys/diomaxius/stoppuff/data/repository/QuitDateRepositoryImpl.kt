@@ -4,8 +4,9 @@ import denys.diomaxius.stoppuff.data.datastore.QuitPreferences
 import denys.diomaxius.stoppuff.domain.repository.QuitDateRepository
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
+import javax.inject.Inject
 
-class QuitDateRepositoryImpl(
+class QuitDateRepositoryImpl @Inject constructor(
     private val prefs: QuitPreferences
 ) : QuitDateRepository {
     override fun getQuitDate(): Flow<LocalDate?> = prefs.getQuitDate()
