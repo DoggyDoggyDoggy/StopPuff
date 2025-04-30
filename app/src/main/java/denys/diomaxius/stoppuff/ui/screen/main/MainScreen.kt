@@ -1,4 +1,4 @@
-package denys.diomaxius.stoppuff.ui.screen
+package denys.diomaxius.stoppuff.ui.screen.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

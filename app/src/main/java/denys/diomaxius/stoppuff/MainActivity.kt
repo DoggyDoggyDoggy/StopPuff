@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import dagger.hilt.android.AndroidEntryPoint
-import denys.diomaxius.stoppuff.ui.screen.MainScreen
+import denys.diomaxius.stoppuff.navigation.AppNavGraph
 import denys.diomaxius.stoppuff.ui.theme.StopPuffTheme
 
 @AndroidEntryPoint
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             StopPuffTheme {
-                MainScreen()
+                AppNavGraph()
             }
         }
     }
