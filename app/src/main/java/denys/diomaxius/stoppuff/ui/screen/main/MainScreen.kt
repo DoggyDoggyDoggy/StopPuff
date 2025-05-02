@@ -72,12 +72,22 @@ fun Content(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Days no smoke",
+                text = "Time vape free",
                 fontSize = 32.sp
             )
 
             Text(
-                text = "${getTimeSinceQuit(quitDate).third}",
+                text = buildString {
+                    if (getTimeSinceQuit(quitDate).first > 0) {
+                        append("${getTimeSinceQuit(quitDate).first} D")
+                    }
+                    if (getTimeSinceQuit(quitDate).second > 0) {
+                        append("${getTimeSinceQuit(quitDate).second} H")
+                    }
+                    if (getTimeSinceQuit(quitDate).third > 0) {
+                        append("${getTimeSinceQuit(quitDate).third} M")
+                    }
+                },
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold
             )
