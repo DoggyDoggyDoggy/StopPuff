@@ -5,16 +5,16 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import denys.diomaxius.stoppuff.domain.usecase.SaveQuitDateUseCase
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardingScreenViewModel @Inject constructor(
     private val saveQuitDateUseCase: SaveQuitDateUseCase
 ) : ViewModel() {
-    fun saveLastDatePuff(date: LocalDate = LocalDate.now()) {
+    fun saveLastDatePuff(dateTime: LocalDateTime = LocalDateTime.now()) {
         viewModelScope.launch {
-            saveQuitDateUseCase(date)
+            saveQuitDateUseCase(dateTime)
         }
     }
 }

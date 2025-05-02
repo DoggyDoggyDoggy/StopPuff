@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 val Context.dataStore by preferencesDataStore(name = "quit_prefs")
 
@@ -15,12 +15,12 @@ class QuitPreferences (private val context: Context) {
         private val QUIT_DATE_KEY = stringPreferencesKey("quit_date")
     }
 
-    fun getQuitDate(): Flow<LocalDate?> = context.dataStore.data
+    fun getQuitDate(): Flow<LocalDateTime?> = context.dataStore.data
         .map { prefs ->
-            prefs[QUIT_DATE_KEY]?.let(LocalDate::parse)
+            prefs[QUIT_DATE_KEY]?.let(LocalDateTime::parse)
         }
 
-    suspend fun saveQuitDate(date: LocalDate) {
+    suspend fun saveQuitDate(date: LocalDateTime) {
         context.dataStore.edit { prefs ->
             if (prefs[QUIT_DATE_KEY] == null) {
                 prefs[QUIT_DATE_KEY] = date.toString()

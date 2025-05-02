@@ -33,7 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import java.time.LocalDate
+import denys.diomaxius.stoppuff.data.constants.Achievements
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @Composable
@@ -42,19 +43,13 @@ fun MainScreen(
 ) {
     val quitDate by viewModel.quitDate.collectAsState()
 
-    val testList = listOf(
-        "1 Day Puff Free",
-        "3 Days Puff Free",
-        "7 Days Puff Free"
-    )
-
     Scaffold(
         topBar = { TopBar() }
     ) { innerPadding ->
         Content(
             modifier = Modifier.padding(innerPadding),
             quitDate = quitDate,
-            achievements = testList
+            achievements = Achievements.achievements
         )
     }
 
@@ -63,7 +58,7 @@ fun MainScreen(
 @Composable
 fun Content(
     modifier: Modifier,
-    quitDate: LocalDate?,
+    quitDate: LocalDateTime?,
     achievements: List<String>
 ) {
     Column(
@@ -82,7 +77,7 @@ fun Content(
             )
 
             Text(
-                text = "${getDayNoVape(quitDate)}",
+                text = "${getMinutesNoVape(quitDate)}",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -138,7 +133,9 @@ fun Achievement(
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(
+
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -164,7 +161,7 @@ fun TopBarPreview() {
 fun ContentPreview() {
     Content(
         Modifier,
-        LocalDate.now(),
+        LocalDateTime.now(),
         achievements = listOf(
             "1 Day Puff Free",
             "3 Days Puff Free",
@@ -179,8 +176,8 @@ fun AchievementPreview() {
     Achievement()
 }
 
-fun getDayNoVape(
-    quitDate: LocalDate?
+fun getMinutesNoVape(
+    quitDate: LocalDateTime?
 ): Long {
-    return quitDate?.let { ChronoUnit.DAYS.between(it, LocalDate.now()) } ?: 0L
+    return quitDate?.let { ChronoUnit.MINUTES.between(it, LocalDateTime.now()) } ?: 0L
 }
