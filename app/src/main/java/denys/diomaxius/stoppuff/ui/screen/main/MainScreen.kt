@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import denys.diomaxius.stoppuff.data.constants.Achievements
+import java.time.Duration
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 @Composable
 fun MainScreen(
@@ -77,7 +77,7 @@ fun Content(
             )
 
             Text(
-                text = "${getMinutesNoVape(quitDate)}",
+                text = "${getTimeSinceQuit(quitDate).third}",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -176,8 +176,14 @@ fun AchievementPreview() {
     Achievement()
 }
 
-fun getMinutesNoVape(
-    quitDate: LocalDateTime?
-): Long {
-    return quitDate?.let { ChronoUnit.MINUTES.between(it, LocalDateTime.now()) } ?: 0L
+fun getTimeSinceQuit(quitDate: LocalDateTime?): Triple<Long, Long, Long> {
+    return quitDate?.let {
+        val duration = Duration.between(it, LocalDateTime.now())
+        val days = duration.toDays()
+        val hours = duration.minusDays(days).toHours()
+        val minutes = duration.minusDays(days).minusHours(hours).toMinutes()
+
+        Triple(days, hours, minutes)
+    } ?: Triple(0, 0, 0)
 }
+
