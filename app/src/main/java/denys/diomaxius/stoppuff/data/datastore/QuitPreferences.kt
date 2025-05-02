@@ -22,7 +22,9 @@ class QuitPreferences (private val context: Context) {
 
     suspend fun saveQuitDate(date: LocalDate) {
         context.dataStore.edit { prefs ->
-            prefs[QUIT_DATE_KEY] = date.toString()
+            if (prefs[QUIT_DATE_KEY] == null) {
+                prefs[QUIT_DATE_KEY] = date.toString()
+            }
         }
     }
 }

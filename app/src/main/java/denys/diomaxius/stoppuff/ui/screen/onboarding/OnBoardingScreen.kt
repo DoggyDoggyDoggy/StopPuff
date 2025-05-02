@@ -23,20 +23,28 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import denys.diomaxius.stoppuff.R
 import denys.diomaxius.stoppuff.navigation.Screen
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    viewModel: OnBoardingScreenViewModel = hiltViewModel()
 ) {
     val slides = listOf<@Composable () -> Unit>(
         { FirstSlide() },
         { SecondSlide() },
-        { ThirdSlide(navHostController = navHostController) }
+        {
+            ThirdSlide(
+                navHostController = navHostController,
+                saveLastDatePuff = { viewModel.saveLastDatePuff() }
+            )
+        }
     )
 
     val pagerState = rememberPagerState { slides.size }
@@ -47,6 +55,7 @@ fun OnBoardingScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     pagerState: PagerState,
@@ -112,7 +121,8 @@ fun SecondSlide() {
 
 @Composable
 fun ThirdSlide(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    saveLastDatePuff: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -142,6 +152,7 @@ fun ThirdSlide(
         Button(
             modifier = Modifier.padding(bottom = 32.dp),
             onClick = {
+                saveLastDatePuff()
                 navHostController.navigate(Screen.Main.route) {
                     popUpTo(Screen.Onboarding.route) { inclusive = true }
                     launchSingleTop = true
@@ -171,17 +182,5 @@ fun SecondSlidePreview() {
 fun ThirdSlidePreview() {
     ThirdSlide(
         navHostController = rememberNavController()
-    )
+    ) {}
 }
-
-/*
-    Button(
-        onClick = {
-            navHostController.navigate(Screen.Main.route) {
-                popUpTo(Screen.Onboarding.route) { inclusive = true }
-                launchSingleTop = true
-            }
-        }
-    ) {
-        Text(text = "MainScreen")
-    }*/
