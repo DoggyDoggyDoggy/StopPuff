@@ -1,7 +1,6 @@
 package denys.diomaxius.stoppuff.ui.screen.main
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -53,10 +52,8 @@ fun Content(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.1f))
-
         MainHeader(
-            modifier = Modifier.weight(0.2f),
+            modifier = Modifier.weight(0.4f),
             days = days,
             hours = hours,
             minutes = minutes
@@ -64,7 +61,7 @@ fun Content(
 
         LazyColumn(
             modifier = Modifier
-                .weight(1f)
+                .weight(0.6f)
                 .padding(horizontal = 16.dp)
         ) {
             items(achievements) {
