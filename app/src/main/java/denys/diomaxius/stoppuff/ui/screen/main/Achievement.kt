@@ -45,8 +45,9 @@ fun Achievement(
                         .padding(12.dp)
                         .size(64.dp)
                         .clip(CircleShape)
-                        .background(Color.Gray),
+                        .background(if (achieved) Color.Green else Color.Gray),
                     imageVector = Icons.Default.Check,
+                    tint = if (achieved) Color.White else Color.DarkGray,
                     contentDescription = "Check"
                 )
             }

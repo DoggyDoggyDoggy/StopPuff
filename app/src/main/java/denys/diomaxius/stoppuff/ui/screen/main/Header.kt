@@ -37,14 +37,14 @@ fun MainHeader(
         Text(
             text = buildString {
                 if (days > 0) {
-                    append("$days D")
+                    append("${days}D ")
                 }
                 if (hours > 0) {
-                    append("$hours H")
+                    append("${hours}H ")
                 }
-                if (minutes > 0) {
-                    append("$minutes M")
-                }
+
+                append("${minutes}M")
+
             },
             fontSize = 36.sp,
             fontWeight = FontWeight.Bold
