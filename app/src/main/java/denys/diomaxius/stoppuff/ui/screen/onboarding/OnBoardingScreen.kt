@@ -4,6 +4,7 @@ package denys.diomaxius.stoppuff.ui.screen.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +14,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,23 +40,56 @@ fun OnBoardingScreen(
     navHostController: NavHostController,
     viewModel: OnBoardingScreenViewModel = hiltViewModel()
 ) {
-    val slides = listOf<@Composable () -> Unit>(
-        { FirstSlide() },
-        { SecondSlide() },
-        {
-            ThirdSlide(
-                navHostController = navHostController,
-                saveLastDatePuff = { viewModel.saveLastDatePuff() }
+    val firstLaunch by viewModel.firstLaunch.collectAsState(initial = null)
+
+    if (firstLaunch != null) {
+        if (firstLaunch == true) {
+            navHostController.navigate(Screen.Main.route) {
+                navHostController.graph.startDestinationRoute?.let { route ->
+                    popUpTo(route) { inclusive = true }
+                }
+                launchSingleTop = true
+            }
+        } else {
+            val slides = listOf<@Composable () -> Unit>(
+                { FirstSlide() },
+                { SecondSlide() },
+                {
+                    ThirdSlide(
+                        navHostController = navHostController,
+                        saveLastDatePuff = { viewModel.saveLastDatePuff() },
+                        setFirstLaunch = { viewModel.setFirstLaunch() }
+                    )
+                }
+            )
+
+            val pagerState = rememberPagerState { slides.size }
+
+            Content(
+                pagerState = pagerState,
+                slides = slides
             )
         }
-    )
+    } else {
+        Loading()
+    }
+}
 
-    val pagerState = rememberPagerState { slides.size }
-
-    Content(
-        pagerState = pagerState,
-        slides = slides
-    )
+@Composable
+fun Loading(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(start = 12.dp),
+            text = "Loading...",
+            style = MaterialTheme.typography.titleLarge
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -122,7 +159,8 @@ fun SecondSlide() {
 @Composable
 fun ThirdSlide(
     navHostController: NavHostController,
-    saveLastDatePuff: () -> Unit
+    saveLastDatePuff: () -> Unit,
+    setFirstLaunch: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -153,6 +191,7 @@ fun ThirdSlide(
             modifier = Modifier.padding(bottom = 32.dp),
             onClick = {
                 saveLastDatePuff()
+                setFirstLaunch()
                 navHostController.navigate(Screen.Main.route) {
                     popUpTo(Screen.Onboarding.route) { inclusive = true }
                     launchSingleTop = true
@@ -163,7 +202,6 @@ fun ThirdSlide(
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -181,6 +219,8 @@ fun SecondSlidePreview() {
 @Composable
 fun ThirdSlidePreview() {
     ThirdSlide(
-        navHostController = rememberNavController()
-    ) {}
+        navHostController = rememberNavController(),
+        saveLastDatePuff = {},
+        setFirstLaunch = {}
+    )
 }
