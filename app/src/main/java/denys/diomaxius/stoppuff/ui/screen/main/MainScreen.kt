@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import denys.diomaxius.stoppuff.data.constants.Achievement
 import denys.diomaxius.stoppuff.data.constants.Achievements
 import java.time.Duration
 import java.time.LocalDateTime
@@ -43,12 +44,16 @@ fun MainScreen(
 ) {
     val quitDate by viewModel.quitDate.collectAsState()
 
+    val (days, hours, minutes) = getTimeSinceQuit(quitDate)
+
     Scaffold(
         topBar = { TopBar() }
     ) { innerPadding ->
         Content(
             modifier = Modifier.padding(innerPadding),
-            quitDate = quitDate,
+            days = days,
+            hours = hours,
+            minutes = minutes,
             achievements = Achievements.achievements
         )
     }
@@ -58,8 +63,10 @@ fun MainScreen(
 @Composable
 fun Content(
     modifier: Modifier,
-    quitDate: LocalDateTime?,
-    achievements: List<String>
+    achievements: List<Achievement>,
+    days: Long,
+    hours: Long,
+    minutes: Long
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -78,14 +85,14 @@ fun Content(
 
             Text(
                 text = buildString {
-                    if (getTimeSinceQuit(quitDate).first > 0) {
-                        append("${getTimeSinceQuit(quitDate).first} D")
+                    if (days > 0) {
+                        append("$days D")
                     }
-                    if (getTimeSinceQuit(quitDate).second > 0) {
-                        append("${getTimeSinceQuit(quitDate).second} H")
+                    if (hours > 0) {
+                        append("$hours H")
                     }
-                    if (getTimeSinceQuit(quitDate).third > 0) {
-                        append("${getTimeSinceQuit(quitDate).third} M")
+                    if (minutes > 0) {
+                        append("$minutes M")
                     }
                 },
                 fontSize = 36.sp,
@@ -99,7 +106,10 @@ fun Content(
                 .padding(horizontal = 16.dp)
         ) {
             items(achievements) {
-                Achievement(it)
+                Achievement(
+                    text = it.title,
+                    achieved = days >= it.daysRequired
+                )
             }
         }
     }
@@ -107,7 +117,8 @@ fun Content(
 
 @Composable
 fun Achievement(
-    text: String = "1 Day Puff Free"
+    text: String,
+    achieved: Boolean
 ) {
     Card(
         modifier = Modifier
@@ -170,20 +181,21 @@ fun TopBarPreview() {
 @Composable
 fun ContentPreview() {
     Content(
-        Modifier,
-        LocalDateTime.now(),
-        achievements = listOf(
-            "1 Day Puff Free",
-            "3 Days Puff Free",
-            "7 Days Puff Free"
-        )
+        modifier = Modifier,
+        achievements = Achievements.achievements,
+        days = 6,
+        hours = 11,
+        minutes = 24
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AchievementPreview() {
-    Achievement()
+    Achievement(
+        text = "aasdasdasdasdasd",
+        achieved = true
+    )
 }
 
 fun getTimeSinceQuit(quitDate: LocalDateTime?): Triple<Long, Long, Long> {
@@ -196,4 +208,3 @@ fun getTimeSinceQuit(quitDate: LocalDateTime?): Triple<Long, Long, Long> {
         Triple(days, hours, minutes)
     } ?: Triple(0, 0, 0)
 }
-
