@@ -25,13 +25,15 @@ class MainScreenViewModel @Inject constructor(
     private val _quitDate = getQuitDateUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    // Public StateFlow emitting a Triple(days, hours, minutes) updated every minute
     @OptIn(ExperimentalCoroutinesApi::class)
     val timeSinceQuit: StateFlow<Triple<Long, Long, Long>> =
         _quitDate
-            .flatMapLatest { date ->
+            .flatMapLatest { date -> // When quitDate changes, cancel old stream and start new
                 if (date == null) {
                     flowOf(Triple(0L, 0L, 0L))
                 } else {
+                    //Start a ticker that emits Unit every minute
                     tickerFlow().map { getTimeSinceQuit(date) }
                 }
             }
@@ -41,10 +43,11 @@ class MainScreenViewModel @Inject constructor(
                 initialValue = Triple(0L, 0L, 0L)
             )
 
-
+    // Helper function to create a cold Flow that emits a tick (Unit) immediately and then every `period` ms
     private fun tickerFlow(initialDelay: Long = 0L, period: Long = 60_000L): Flow<Unit> = flow {
         delay(initialDelay)
         emit(Unit)
+        // Enter an infinite loop emitting at fixed intervals until cancelled
         while (true) {
             delay(period)
             emit(Unit)
