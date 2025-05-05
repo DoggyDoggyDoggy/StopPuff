@@ -32,8 +32,7 @@ class MainScreenViewModel @Inject constructor(
                 if (date == null) {
                     flowOf(Triple(0L, 0L, 0L))
                 } else {
-                    tickerFlow(initialDelay = 0L, period = 60_000L)
-                        .map { getTimeSinceQuit(date) }
+                    tickerFlow().map { getTimeSinceQuit(date) }
                 }
             }
             .stateIn(
@@ -43,7 +42,7 @@ class MainScreenViewModel @Inject constructor(
             )
 
 
-    private fun tickerFlow(initialDelay: Long, period: Long): Flow<Unit> = flow {
+    private fun tickerFlow(initialDelay: Long = 0L, period: Long = 60_000L): Flow<Unit> = flow {
         delay(initialDelay)
         emit(Unit)
         while (true) {
