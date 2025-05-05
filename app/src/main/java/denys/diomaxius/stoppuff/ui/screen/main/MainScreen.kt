@@ -16,16 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import denys.diomaxius.stoppuff.data.constants.Achievement
 import denys.diomaxius.stoppuff.data.constants.Achievements
-import java.time.Duration
-import java.time.LocalDateTime
 
 @Composable
 fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
-    val quitDate by viewModel.quitDate.collectAsState()
-
-    val (days, hours, minutes) = getTimeSinceQuit(quitDate)
+    val timeTriple by viewModel.timeSinceQuit.collectAsState()
+    val (days, hours, minutes) = timeTriple
 
     Scaffold(
         topBar = { TopBar() }
@@ -84,15 +81,4 @@ fun ContentPreview() {
         hours = 11,
         minutes = 24
     )
-}
-
-fun getTimeSinceQuit(quitDate: LocalDateTime?): Triple<Long, Long, Long> {
-    return quitDate?.let {
-        val duration = Duration.between(it, LocalDateTime.now())
-        val days = duration.toDays()
-        val hours = duration.minusDays(days).toHours()
-        val minutes = duration.minusDays(days).minusHours(hours).toMinutes()
-
-        Triple(days, hours, minutes)
-    } ?: Triple(0, 0, 0)
 }
