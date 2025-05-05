@@ -2,8 +2,9 @@ package denys.diomaxius.stoppuff.domain.usecase
 
 import java.time.Duration
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-class GetTimeSinceQuitUseCase {
+class GetTimeSinceQuitUseCase @Inject constructor() {
     operator fun invoke(quitDate: LocalDateTime?): Triple<Long, Long, Long> {
         return quitDate?.let {
             val duration = Duration.between(it, LocalDateTime.now())
