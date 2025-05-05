@@ -1,4 +1,4 @@
-package denys.diomaxius.stoppuff.ui.screen.main
+package denys.diomaxius.stoppuff.ui.screen.main.menutabs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row

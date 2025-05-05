@@ -11,6 +11,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,6 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import denys.diomaxius.stoppuff.data.constants.Achievement
 import denys.diomaxius.stoppuff.data.constants.Achievements
+import denys.diomaxius.stoppuff.data.constants.MenuTab
+import denys.diomaxius.stoppuff.ui.screen.main.menutabs.Achievement
+import denys.diomaxius.stoppuff.ui.screen.main.menutabs.Money
+import denys.diomaxius.stoppuff.ui.screen.main.menutabs.Tips
 
 @Composable
 fun MainScreen(
@@ -47,6 +54,10 @@ fun Content(
     hours: Long,
     minutes: Long
 ) {
+    var tab by remember {
+        mutableStateOf(MenuTab.menuTabs[0])
+    }
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -58,19 +69,37 @@ fun Content(
             minutes = minutes
         )
 
-        ViewSwitcher()
+        ViewSwitcher(
+            switchMenuTab = {tab = it}
+        )
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        LazyColumn(
-            modifier = Modifier
-                .weight(0.7f)
-                .padding(horizontal = 16.dp)
-        ) {
-            items(achievements) {
-                Achievement(
-                    text = it.title,
-                    achieved = days >= it.daysRequired
+        when (tab) {
+            MenuTab.menuTabs[0] -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(0.7f)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(achievements) {
+                        Achievement(
+                            text = it.title,
+                            achieved = days >= it.daysRequired
+                        )
+                    }
+                }
+            }
+
+            MenuTab.menuTabs[1] -> {
+                Money(
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            MenuTab.menuTabs[2] -> {
+                Tips(
+                    modifier = Modifier.weight(1f)
                 )
             }
         }

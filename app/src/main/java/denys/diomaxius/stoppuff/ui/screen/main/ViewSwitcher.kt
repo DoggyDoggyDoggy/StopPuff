@@ -1,5 +1,6 @@
 package denys.diomaxius.stoppuff.ui.screen.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,14 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
-object SwitchTab {
-    val switchTabs = listOf("Progress", "Money", "Tips")
-}
+import denys.diomaxius.stoppuff.data.constants.MenuTab
 
 @Composable
-fun ViewSwitcher() {
-    Row (
+fun ViewSwitcher(
+    switchMenuTab: (String) -> Unit
+) {
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
@@ -27,13 +27,16 @@ fun ViewSwitcher() {
         horizontalArrangement = Arrangement.Start
     ) {
         repeat(3) {
-            Card (
-                modifier = Modifier.padding(4.dp),
+            Card(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clickable { switchMenuTab(MenuTab.menuTabs[it]) }
+                ,
                 elevation = CardDefaults.cardElevation(5.dp)
-            ){
+            ) {
                 Text(
                     modifier = Modifier.padding(12.dp),
-                    text = SwitchTab.switchTabs[it]
+                    text = MenuTab.menuTabs[it]
                 )
             }
         }
@@ -43,5 +46,7 @@ fun ViewSwitcher() {
 @Preview(showBackground = true)
 @Composable
 fun ViewSwitcherPreview() {
-    ViewSwitcher()
+    ViewSwitcher(
+        switchMenuTab = {}
+    )
 }
