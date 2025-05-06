@@ -6,4 +6,6 @@ import java.time.LocalDateTime
 interface QuitDateRepository {
     fun getQuitDate(): Flow<LocalDateTime?>
     suspend fun saveQuitDate(date: LocalDateTime)
+    fun getDailySpending(): Flow<Double?>
+    suspend fun saveDailySpending(amount: Double)
 }
