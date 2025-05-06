@@ -1,6 +1,7 @@
 package denys.diomaxius.stoppuff.data.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -10,9 +11,10 @@ import java.time.LocalDateTime
 
 val Context.dataStore by preferencesDataStore(name = "quit_prefs")
 
-class QuitPreferences (private val context: Context) {
+class QuitPreferences(private val context: Context) {
     companion object {
         private val QUIT_DATE_KEY = stringPreferencesKey("quit_date")
+        private val DAILY_SPENDING_KEY = doublePreferencesKey("daily_spending")
     }
 
     fun getQuitDate(): Flow<LocalDateTime?> = context.dataStore.data
@@ -22,9 +24,18 @@ class QuitPreferences (private val context: Context) {
 
     suspend fun saveQuitDate(date: LocalDateTime) {
         context.dataStore.edit { prefs ->
-            if (prefs[QUIT_DATE_KEY] == null) {
-                prefs[QUIT_DATE_KEY] = date.toString()
-            }
+            prefs[QUIT_DATE_KEY] = date.toString()
+        }
+    }
+
+    fun getDailySpending(): Flow<Double?> = context.dataStore.data
+        .map { prefs ->
+            prefs[DAILY_SPENDING_KEY]
+        }
+
+    suspend fun saveDailySpending(amount: Double) {
+        context.dataStore.edit { prefs ->
+            prefs[DAILY_SPENDING_KEY] = amount
         }
     }
 }
