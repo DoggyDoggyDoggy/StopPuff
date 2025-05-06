@@ -55,7 +55,7 @@ fun Content(
     minutes: Long
 ) {
     var tab by remember {
-        mutableStateOf(MenuTab.menuTabs[1])
+        mutableStateOf(MenuTab.menuTabs[0])
     }
 
     Column(
