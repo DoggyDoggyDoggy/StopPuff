@@ -55,7 +55,7 @@ fun Content(
     minutes: Long
 ) {
     var tab by remember {
-        mutableStateOf(MenuTab.menuTabs[0])
+        mutableStateOf(MenuTab.menuTabs[1])
     }
 
     Column(
@@ -93,13 +93,13 @@ fun Content(
 
             MenuTab.menuTabs[1] -> {
                 Money(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(0.7f)
                 )
             }
 
             MenuTab.menuTabs[2] -> {
                 Tips(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(0.7f)
                 )
             }
         }
