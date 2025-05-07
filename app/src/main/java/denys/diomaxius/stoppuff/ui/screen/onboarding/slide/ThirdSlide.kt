@@ -4,75 +4,65 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import denys.diomaxius.stoppuff.navigation.Screen
+import denys.diomaxius.stoppuff.R
 
 @Composable
-fun ThirdSlide(
-    navHostController: NavHostController,
-    saveLastDatePuff: () -> Unit,
-    setFirstLaunch: () -> Unit
-) {
+fun ThirdSlide() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(1.dp)) // Third child
+        Text(
+            text = stringResource(R.string.onboarding_slide_three_header),
+            fontSize = 32.sp,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Medium,
+            lineHeight = 36.sp
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = stringResource(R.string.onboarding_slide_three_subtitle),
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center
+        )
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Last puffs",
-                fontWeight = FontWeight.Medium,
-                fontSize = 26.sp
-            )
+        Spacer(modifier = Modifier.height(24.dp))
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = "",
+            onValueChange = {},
+            label = { Text(text = "Enter the amount")},
+            placeholder = { Text(text = "For example 10")}
+        )
 
-            Text(
-                text = "Vape last time before you start",
-                textAlign = TextAlign.Center,
-                fontSize = 16.sp
-            )
-        }
-
-        Button(
-            modifier = Modifier.padding(bottom = 32.dp),
-            onClick = {
-                saveLastDatePuff()
-                setFirstLaunch()
-                navHostController.navigate(Screen.Main.route) {
-                    popUpTo(Screen.Onboarding.route) { inclusive = true }
-                    launchSingleTop = true
-                }
-            }
-        ) {
-            Text(text = "Start")
-        }
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            text = stringResource(R.string.onboarding_slide_three_textfield_subtitle),
+            fontSize = 16.sp
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ThirdSlidePreview() {
-    ThirdSlide(
-        navHostController = rememberNavController(),
-        saveLastDatePuff = {},
-        setFirstLaunch = {}
-    )
+    ThirdSlide()
 }

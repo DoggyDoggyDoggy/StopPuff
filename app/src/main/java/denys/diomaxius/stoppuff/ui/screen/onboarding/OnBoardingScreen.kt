@@ -18,6 +18,7 @@ import denys.diomaxius.stoppuff.navigation.Screen
 import denys.diomaxius.stoppuff.ui.screen.components.Loading
 import denys.diomaxius.stoppuff.ui.screen.onboarding.slide.FirstSlide
 import denys.diomaxius.stoppuff.ui.screen.onboarding.slide.SecondSlide
+import denys.diomaxius.stoppuff.ui.screen.onboarding.slide.FourthSlide
 import denys.diomaxius.stoppuff.ui.screen.onboarding.slide.ThirdSlide
 
 
@@ -41,8 +42,9 @@ fun OnBoardingScreen(
             val slides = listOf<@Composable () -> Unit>(
                 { FirstSlide() },
                 { SecondSlide() },
+                { ThirdSlide() },
                 {
-                    ThirdSlide(
+                    FourthSlide(
                         navHostController = navHostController,
                         saveLastDatePuff = { viewModel.saveLastDatePuff() },
                         setFirstLaunch = { viewModel.setFirstLaunch() }
