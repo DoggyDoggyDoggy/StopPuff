@@ -11,6 +11,6 @@ class QuitDateRepositoryImpl @Inject constructor(
 ) : QuitDateRepository {
     override fun getQuitDate(): Flow<LocalDateTime?> = prefs.getQuitDate()
     override suspend fun saveQuitDate(date: LocalDateTime) = prefs.saveQuitDate(date)
-    override fun getDailySpending(): Flow<Double?> = prefs.getDailySpending()
-    override suspend fun saveDailySpending(amount: Double) = prefs.saveDailySpending(amount)
+    override fun getDailySpending(): Flow<Int?> = prefs.getDailySpending()
+    override suspend fun saveDailySpending(amount: Int) = prefs.saveDailySpending(amount)
 }

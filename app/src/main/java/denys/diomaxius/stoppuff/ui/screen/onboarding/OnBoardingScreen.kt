@@ -29,6 +29,7 @@ fun OnBoardingScreen(
     viewModel: OnBoardingScreenViewModel = hiltViewModel()
 ) {
     val firstLaunch by viewModel.firstLaunch.collectAsState(initial = null)
+    val dailySpend by viewModel.dailySpend.collectAsState(initial = null)
 
     if (firstLaunch != null) {
         if (firstLaunch == true) {
@@ -42,7 +43,12 @@ fun OnBoardingScreen(
             val slides = listOf<@Composable () -> Unit>(
                 { FirstSlide() },
                 { SecondSlide() },
-                { ThirdSlide() },
+                {
+                    ThirdSlide(
+                        dailySpend = dailySpend,
+                        saveDailySpending = {viewModel.saveDailySpending(it)}
+                    )
+                },
                 {
                     FourthSlide(
                         navHostController = navHostController,

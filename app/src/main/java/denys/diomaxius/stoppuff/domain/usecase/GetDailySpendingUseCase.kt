@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetDailySpendingUseCase @Inject constructor(
     private val repository: QuitDateRepository
 ) {
-    operator fun invoke(): Flow<Double?> = repository.getDailySpending()
+    operator fun invoke(): Flow<Int?> = repository.getDailySpending()
 }

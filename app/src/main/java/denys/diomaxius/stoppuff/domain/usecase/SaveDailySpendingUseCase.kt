@@ -6,5 +6,5 @@ import javax.inject.Inject
 class SaveDailySpendingUseCase @Inject constructor(
     private val repository: QuitDateRepository
 ) {
-    suspend operator fun invoke(amount: Double) = repository.saveDailySpending(amount)
+    suspend operator fun invoke(amount: Int) = repository.saveDailySpending(amount)
 }
