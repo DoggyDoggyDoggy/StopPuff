@@ -2,6 +2,7 @@ package denys.diomaxius.stoppuff.ui.screen.main.menutabs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,7 +40,7 @@ fun Money(
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
-                text = "${days * dailySpend}",
+                text = "$${days * dailySpend}",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -50,23 +51,28 @@ fun Money(
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            Text(
-                text = "day $dailySpend",
-                fontSize = 22.sp
-            )
-            Text(
-                text = "week ${dailySpend * 7}",
-                fontSize = 22.sp
-            )
-            Text(
-                text = "month ${dailySpend * 30}",
-                fontSize = 22.sp
-            )
-            Text(
-                text = "year ${dailySpend * 365}",
-                fontSize = 22.sp
-            )
+            InfoRow(label = "Per day", value = dailySpend)
+            InfoRow(label = "Per week", value = dailySpend * 7)
+            InfoRow(label = "Per month", value = dailySpend * 30)
+            InfoRow(label = "Per year", value = dailySpend * 365)
         }
+    }
+}
+
+@Composable
+fun InfoRow(label: String, value: Number) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(text = label, fontSize = 22.sp)
+        Text(
+            modifier = Modifier.padding(end = 4.dp),
+            text = "$${value}",
+            fontSize = 22.sp
+        )
     }
 }
 
