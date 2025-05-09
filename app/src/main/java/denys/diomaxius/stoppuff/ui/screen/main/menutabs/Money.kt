@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Money(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    dailySpend: Int,
+    days: Long
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -37,7 +39,7 @@ fun Money(
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
-                text = "135",
+                text = "${days * dailySpend}",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -49,19 +51,19 @@ fun Money(
             modifier = Modifier.padding(12.dp)
         ) {
             Text(
-                text = "day 10",
+                text = "day $dailySpend",
                 fontSize = 22.sp
             )
             Text(
-                text = "week 70",
+                text = "week ${dailySpend * 7}",
                 fontSize = 22.sp
             )
             Text(
-                text = "month 300",
+                text = "month ${dailySpend * 30}",
                 fontSize = 22.sp
             )
             Text(
-                text = "year 3600",
+                text = "year ${dailySpend * 365}",
                 fontSize = 22.sp
             )
         }
@@ -71,5 +73,8 @@ fun Money(
 @Preview(showBackground = true)
 @Composable
 fun PreviewMoney() {
-    Money()
+    Money(
+        dailySpend = 10,
+        days = 3
+        )
 }

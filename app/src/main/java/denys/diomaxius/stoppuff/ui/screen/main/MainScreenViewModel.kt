@@ -3,6 +3,7 @@ package denys.diomaxius.stoppuff.ui.screen.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import denys.diomaxius.stoppuff.domain.usecase.GetDailySpendingUseCase
 import denys.diomaxius.stoppuff.domain.usecase.GetQuitDateUseCase
 import denys.diomaxius.stoppuff.domain.usecase.GetTimeSinceQuitUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,10 +21,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
     getQuitDateUseCase: GetQuitDateUseCase,
-    private val getTimeSinceQuit: GetTimeSinceQuitUseCase
+    private val getTimeSinceQuit: GetTimeSinceQuitUseCase,
+    getDailySpendingUseCase: GetDailySpendingUseCase
 ) : ViewModel() {
     private val _quitDate = getQuitDateUseCase()
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    private val _dailySpend = getDailySpendingUseCase()
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+    val dailySpend: StateFlow<Int?> = _dailySpend
 
     // Public StateFlow emitting a Triple(days, hours, minutes) updated every minute
     @OptIn(ExperimentalCoroutinesApi::class)

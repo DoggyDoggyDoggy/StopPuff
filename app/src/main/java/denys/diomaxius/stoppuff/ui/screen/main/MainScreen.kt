@@ -31,6 +31,8 @@ fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel()
 ) {
     val timeTriple by viewModel.timeSinceQuit.collectAsState()
+    val dailySpend by viewModel.dailySpend.collectAsState()
+
     val (days, hours, minutes) = timeTriple
 
     Scaffold(
@@ -41,7 +43,8 @@ fun MainScreen(
             days = days,
             hours = hours,
             minutes = minutes,
-            achievements = Achievements.achievements
+            achievements = Achievements.achievements,
+            dailySpend = dailySpend ?: 0
         )
     }
 }
@@ -52,7 +55,8 @@ fun Content(
     achievements: List<Achievement>,
     days: Long,
     hours: Long,
-    minutes: Long
+    minutes: Long,
+    dailySpend: Int
 ) {
     var tab by remember {
         mutableStateOf(MenuTab.menuTabs[0])
@@ -93,7 +97,9 @@ fun Content(
 
             MenuTab.menuTabs[1] -> {
                 Money(
-                    modifier = Modifier.weight(0.7f)
+                    modifier = Modifier.weight(0.7f),
+                    dailySpend = dailySpend,
+                    days = days
                 )
             }
 
@@ -114,6 +120,7 @@ fun ContentPreview() {
         achievements = Achievements.achievements,
         days = 6,
         hours = 11,
-        minutes = 24
+        minutes = 24,
+        dailySpend = 10
     )
 }
