@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.TextFieldBuffer
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
@@ -47,7 +46,9 @@ fun SettingScreen(
     ) { innerPadding ->
         Content(
             modifier = Modifier.padding(innerPadding),
-            navHostController = navHostController
+            navHostController = navHostController,
+            saveDailySpending = {viewModel.saveDailySpending(it)},
+            dailySpending = dailySpending
         )
     }
 }
@@ -55,7 +56,9 @@ fun SettingScreen(
 @Composable
 fun Content(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    saveDailySpending: (String) -> Unit,
+    dailySpending: Int?
 ) {
     Column(
         modifier = modifier
@@ -67,7 +70,10 @@ fun Content(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        ChangeDailySpending()
+        ChangeDailySpending(
+            saveDailySpending = saveDailySpending,
+            dailySpending = dailySpending
+            )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -107,7 +113,11 @@ fun ResetProgress(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ChangeDailySpending(modifier: Modifier = Modifier) {
+fun ChangeDailySpending(
+    modifier: Modifier = Modifier,
+    saveDailySpending: (String) -> Unit,
+    dailySpending: Int?
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -126,8 +136,8 @@ fun ChangeDailySpending(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            value = "",
-            onValueChange = {},
+            value = "${dailySpending ?: ""}",
+            onValueChange = { saveDailySpending(it) },
             label = { Text(text = "Enter amount") },
             placeholder = { Text(text = "For example 10") },
             keyboardOptions = KeyboardOptions.Default.copy(
