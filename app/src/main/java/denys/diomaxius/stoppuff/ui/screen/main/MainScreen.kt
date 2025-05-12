@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import denys.diomaxius.stoppuff.data.constants.Achievement
 import denys.diomaxius.stoppuff.data.constants.Achievements
 import denys.diomaxius.stoppuff.data.constants.MenuTab
@@ -28,7 +29,8 @@ import denys.diomaxius.stoppuff.ui.screen.main.menutabs.Tips
 
 @Composable
 fun MainScreen(
-    viewModel: MainScreenViewModel = hiltViewModel()
+    viewModel: MainScreenViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ) {
     val timeTriple by viewModel.timeSinceQuit.collectAsState()
     val dailySpend by viewModel.dailySpend.collectAsState()
@@ -36,7 +38,11 @@ fun MainScreen(
     val (days, hours, minutes) = timeTriple
 
     Scaffold(
-        topBar = { TopBar() }
+        topBar = {
+            TopBar(
+                navHostController = navHostController
+            )
+        }
     ) { innerPadding ->
         Content(
             modifier = Modifier.padding(innerPadding),
@@ -74,7 +80,7 @@ fun Content(
         )
 
         ViewSwitcher(
-            switchMenuTab = {tab = it}
+            switchMenuTab = { tab = it }
         )
 
         Spacer(modifier = Modifier.height(6.dp))

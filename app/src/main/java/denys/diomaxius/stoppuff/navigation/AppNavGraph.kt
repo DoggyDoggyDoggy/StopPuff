@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import denys.diomaxius.stoppuff.ui.screen.main.MainScreen
 import denys.diomaxius.stoppuff.ui.screen.onboarding.OnBoardingScreen
+import denys.diomaxius.stoppuff.ui.screen.setting.SettingScreen
 
 @Composable
 fun AppNavGraph(
@@ -21,7 +22,11 @@ fun AppNavGraph(
         }
 
         composable(route = Screen.Main.route) {
-            MainScreen()
+            MainScreen(navHostController = navHostController)
+        }
+
+        composable(route = Screen.Setting.route) {
+            SettingScreen(navHostController = navHostController)
         }
     }
 }

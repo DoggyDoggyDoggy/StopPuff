@@ -1,5 +1,6 @@
 package denys.diomaxius.stoppuff.ui.screen.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import denys.diomaxius.stoppuff.navigation.Screen
 
 @Composable
 fun MainHeader(
@@ -54,7 +58,9 @@ fun MainHeader(
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(
+    navHostController: NavHostController
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End
@@ -62,7 +68,13 @@ fun TopBar() {
         Icon(
             modifier = Modifier
                 .padding(12.dp)
-                .size(32.dp),
+                .size(32.dp)
+                .clickable{
+                    navHostController.navigate(Screen.Setting.route) {
+                        launchSingleTop = true
+                    }
+                }
+            ,
             imageVector = Icons.Default.Settings,
             contentDescription = "Settings"
         )
@@ -72,5 +84,7 @@ fun TopBar() {
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-    TopBar()
+    TopBar(
+        navHostController = rememberNavController()
+    )
 }

@@ -19,10 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun SettingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
 ) {
     Scaffold(
         modifier = modifier,
@@ -31,18 +34,21 @@ fun SettingScreen(
         }
     ) { innerPadding ->
         Content(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            navHostController = navHostController
         )
     }
 }
 
 @Composable
-fun Content(modifier: Modifier = Modifier) {
+fun Content(
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(top = 24.dp)
-        ,
+            .padding(top = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
@@ -100,7 +106,7 @@ fun Content(modifier: Modifier = Modifier) {
         Button(
             modifier = Modifier.padding(bottom = 24.dp),
             onClick = {
-
+                navHostController.popBackStack()
             }
         ) {
             Text(text = "Back")
@@ -111,5 +117,7 @@ fun Content(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun SettingScreenPreview() {
-    SettingScreen()
+    SettingScreen(
+        navHostController = rememberNavController()
+    )
 }
