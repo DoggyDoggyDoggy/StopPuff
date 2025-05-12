@@ -47,8 +47,9 @@ fun SettingScreen(
         Content(
             modifier = Modifier.padding(innerPadding),
             navHostController = navHostController,
-            saveDailySpending = {viewModel.saveDailySpending(it)},
-            dailySpending = dailySpending
+            saveDailySpending = { viewModel.saveDailySpending(it) },
+            dailySpending = dailySpending,
+            resetLastDatePuff = { viewModel.resetLastDatePuff() }
         )
     }
 }
@@ -58,7 +59,8 @@ fun Content(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     saveDailySpending: (String) -> Unit,
-    dailySpending: Int?
+    dailySpending: Int?,
+    resetLastDatePuff: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -66,14 +68,16 @@ fun Content(
             .padding(top = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ResetProgress()
+        ResetProgress(
+            resetLastDatePuff = resetLastDatePuff
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         ChangeDailySpending(
             saveDailySpending = saveDailySpending,
             dailySpending = dailySpending
-            )
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -89,7 +93,10 @@ fun Content(
 }
 
 @Composable
-fun ResetProgress(modifier: Modifier = Modifier) {
+fun ResetProgress(
+    modifier: Modifier = Modifier,
+    resetLastDatePuff: () -> Unit
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -105,7 +112,7 @@ fun ResetProgress(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            onClick = {}
+            onClick = { resetLastDatePuff() }
         ) {
             Text(text = "Reset")
         }
