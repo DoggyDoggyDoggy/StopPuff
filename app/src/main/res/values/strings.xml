@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StopPuff</string>
+    <string name="onboarding_slide_one_description">It\'s time to put cigarettes in the past. StopPuff will help you track your progress, motivate yourself, and celebrate victories over the habit.</string>
+    <string name="onboarding_slide_one_name">Welcome to StopPuff!</string>
+    <string name="onboarding_slide_two_description">Every smoke-free day is an investment in your health. We will count your \"clean\" days and show you how they increase.</string>
+    <string name="onboarding_slide_two_name">Watch your record grow</string>
+    <string name="onboarding_slide_three_header">How much money do you spend on vaping every day?</string>
+    <string name="onboarding_slide_three_subtitle">This will help us calculate how much you\'ll save when you quit.</string>
+    <string name="onboarding_slide_three_textfield_subtitle">Enter the approximate amount you spend on a typical day. Even if it\'s not every day, we\'ll still calculate the average.</string>
+</resources>
