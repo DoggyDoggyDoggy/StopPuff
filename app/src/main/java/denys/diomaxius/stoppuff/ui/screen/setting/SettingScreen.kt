@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import denys.diomaxius.stoppuff.ui.screen.main.TopBar
 
 @Composable
 fun SettingScreen(
@@ -30,7 +31,7 @@ fun SettingScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            // TODO: Add top bar
+            TopBar(navHostController = navHostController)
         }
     ) { innerPadding ->
         Content(
