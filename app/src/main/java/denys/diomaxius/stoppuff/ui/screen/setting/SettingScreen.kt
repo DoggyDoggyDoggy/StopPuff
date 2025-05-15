@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
@@ -28,6 +29,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import denys.diomaxius.stoppuff.ui.screen.main.TopBar
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 
 @Composable
@@ -97,6 +100,19 @@ fun ResetProgress(
     modifier: Modifier = Modifier,
     resetLastDatePuff: () -> Unit
 ) {
+    val openAlertDialog = remember { mutableStateOf(false) }
+
+    if (openAlertDialog.value) {
+        AlertDialogReset(
+            modifier = modifier,
+            onDismissRequest = { openAlertDialog.value = false },
+            onReset = {
+                resetLastDatePuff()
+                openAlertDialog.value = false
+            }
+        )
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -112,11 +128,49 @@ fun ResetProgress(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            onClick = { resetLastDatePuff() }
+            onClick = { openAlertDialog.value = true }
         ) {
             Text(text = "Reset")
         }
     }
+}
+
+@Composable
+fun AlertDialogReset(
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    onReset: () -> Unit
+    ) {
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onReset()
+                }
+            ) {
+                Text("Reset")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text("Cancel")
+            }
+        },
+        title = {
+            Text("Reset progress?")
+        },
+        text = {
+            Text("Are you sure you want to delete all progress? This action is irreversible.")
+        }
+    )
 }
 
 @Composable
